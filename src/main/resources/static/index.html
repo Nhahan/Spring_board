@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>스프링 게시판</title>
+</head>
+<body>
+<div class="wrapper">
+    <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
+        <div class="card-header bg-transparent border-success main-title"><h4>스프링 자유게시판</h4></div>
+    </div>
+    <!--    https://getbootstrap.com/docs/4.0/components/alerts/-->
+    <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
+        <form class="form-class">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">제목</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">이름</span>
+                </div>
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+            </div>
+            <div class="input-group input-group-sm mb-3 textarea-height">
+                <textarea class="form-control save-z-index" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                          placeholder="(내용을 입력하세요)"></textarea>
+            </div>
+            <button type="button" class="btn btn-success save-button">저장</button>
+        </form>
+    </div>
+
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+        <div class="card-header bg-transparent border-success" id="post">Title</div>
+        <div class="card-body text-success">
+            <h5 class="card-title" id="name">Name</h5>
+            <p class="card-text" id="contents">Contents</p>
+        </div>
+        <div class="card-footer bg-transparent border-success" id="date">Date</div>
+    </div>
+
+</div>
+</body>
+</html>

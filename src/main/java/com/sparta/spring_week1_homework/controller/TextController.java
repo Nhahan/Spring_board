@@ -27,7 +27,11 @@ public class TextController {
         return textRepository.findAllByOrderByModifiedAtDesc();
     }
 
-//    @PutMapping
+    @PutMapping("/api/texts/{id}")
+    public Long updateText(@PathVariable Long id, @RequestBody TextRequestDto requestDto) {
+        textService.update(id, requestDto);
+        return id;
+    }
 
     @DeleteMapping("/api/texts/{id}")
     public Long deleteText(@PathVariable Long id) {
