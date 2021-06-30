@@ -20,6 +20,122 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>스프링 게시판</title>
 </head>
+<script>
+    $(document).ready(function () {
+        $('#cards_box').empty();
+        $.ajax({
+            type: 'GET',
+            url: '/api/texts',
+            success: function (response) {
+                for (let i = 0; i < response.length; i++) {
+                    let text = response[i];
+                    let time = text.modifiedAt.split('T');
+                    let final_text = time[0] + " / " + time[1].split('.')[0];
+                    addHTML(text.id, text.username, text.title, text.contents, final_text);
+                }
+            }
+        })
+    })
+
+    // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
+    function addHTML(id, username, title, contents, modifiedAt) {
+        let tempHtml = `<div class="card border-success mb-3 relative">
+                            <div class="card-header bg-transparent border-success relative max-width-100" id="${id}-post">${title}
+                                <img src="image/free-icon-delete-button-70287.svg" id="${id}-delete" alt="Delete" class="delete-button" onclick="deleteOne('${id}')">
+                            </div>
+                            <div class="card-body text-success">
+                                <h5 class="card-title" id="${id}-name">${username}</h5>
+                                <p class="card-text" id="${id}-contents">${contents}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
+                            <img src="image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
+                        </div>`;
+        $('#cards_box').append(tempHtml);
+    }
+
+    function isValidTitle(titleInput) {
+        if (titleInput == '') {
+            alert('제목을 입력해주세요');
+            return false;
+        }
+        if (titleInput.trim().length > 12) {
+            alert('제목을 공백 포함 12자 이하로 입력해주세요');
+            return false;
+        }
+        return true;
+    }
+
+    function isValidName(nameInput) {
+        if (nameInput == '') {
+            alert('별명을 입력해주세요');
+            return false;
+        }
+        if (nameInput.trim().length > 12) {
+            alert('별명을 공백 포함 12자 이하로 입력해주세요');
+            return false;
+        }
+        return true;
+    }
+
+    function isValidContents(contentsInput) {
+        if (contentsInput == '') {
+            alert('내용을 입력해주세요');
+            return false;
+        }
+        if (contentsInput.trim().length > 140) {
+            alert('내용을 공백 포함 140자 이하로 입력해주세요');
+            return false;
+        }
+        return true;
+    }
+
+    function writePost() {
+        let title = $('#title-input').val();
+        if (isValidTitle(title) == false) {
+            return
+        }
+        let username = $('#name-input').val();
+        if (isValidName(username) == false) {
+            return
+        }
+        let contents = $('textarea#content-input').val();
+        if (isValidContents(contents) == false) {
+            return
+        }
+        let data = {'title': title, 'username': username, 'contents': contents};
+        $.ajax({
+            type: "POST",
+            url: "/api/texts",
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: JSON.stringify(data),
+            success: function (response) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function deleteOne(id) {
+        if (confirm("정말 삭제하시겠습니까?") == true) {    //확인
+            $.ajax({
+                type: "DELETE",
+                url: `/api/texts/${id}`,
+                success: function (response) {
+                    window.location.reload();
+                }
+            })
+        }
+    }
+
+    function detail(id) {
+        localStorage.setItem("id", `${id}`)
+        window.location.href = "detail.html"
+    }
+    
+    function home() {
+        window.location.href = "/"
+    }
+
+</script>
 <body>
 <div class="wrapper">
     <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
@@ -30,32 +146,30 @@
         <form class="form-class">
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">제목</span>
+                    <span class="input-group-text">제목</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                       id="title-input">
             </div>
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">이름</span>
+                    <span class="input-group-text">이름</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm">
+                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                       id="name-input">
             </div>
             <div class="input-group input-group-sm mb-3 textarea-height">
                 <textarea class="form-control save-z-index" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                          placeholder="(내용을 입력하세요)"></textarea>
+                          placeholder="(내용을 입력하세요)" id="content-input"></textarea>
             </div>
-            <button type="button" class="btn btn-success save-button">저장</button>
+            <button type="button" class="btn btn-success save-button" onclick="writePost()">저장</button>
         </form>
     </div>
 
-    <div class="card border-success mb-3" style="max-width: 18rem;">
-        <div class="card-header bg-transparent border-success" id="post">Title</div>
-        <div class="card-body text-success">
-            <h5 class="card-title" id="name">Name</h5>
-            <p class="card-text" id="contents">Contents</p>
-        </div>
-        <div class="card-footer bg-transparent border-success" id="date">Date</div>
+    <div class="max-width-100" id="cards_box">
     </div>
+
+    <img src="image/home-button.svg" class="home-button" onclick="home()" alt="Home">
 
 </div>
 </body>

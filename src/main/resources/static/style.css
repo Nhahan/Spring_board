@@ -31,3 +31,61 @@
 .save-z-index {
     z-index: 100;
 }
+
+.relative {
+    position: relative;
+}
+
+.delete-button {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: 50%;
+    right: 2.5%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    height: 17px;
+    width: 17px;
+    top: 50%;
+    right: 2%;
+}
+
+.plus-button {
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: 50%;
+    right: -25%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.plus-button:hover {
+    height: 18px;
+    width: 18px;
+    top: 50%;
+    right: -26%;
+}
+
+.max-width-100 {
+    width: 248px;
+}
+
+.home-button {
+    width: 45px;
+    height: 45px;
+    position: fixed;
+    right: 6%;
+    bottom: 6%;
+    text-align: center;
+}
+
+.home-button:hover {
+    width: 46px;
+    height: 46px;
+    right: 5.9%;
+    bottom: 5.9%;
+}

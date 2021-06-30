@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>스프링 게시판</title>
+</head>
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: 'GET',
+            url: '/api/texts/' + localStorage.getItem("id"),
+            success: function (response) {
+                for (let i = 0; i < response.length; i++) {
+                    let text = response[i];
+                    let time = text.modifiedAt.split('T');
+                    let final_text = time[0] + " / " + time[1].split('.')[0];
+                    addHTML(text.id, text.username, text.title, text.contents, final_text);
+                }
+            }
+        })
+    })
+
+    function addHTML(id, username, title, contents, modifiedAt) {
+        let tempHtml = `<div class="card border-success mb-3 relative">
+                            <div class="card-header bg-transparent border-success relative max-width-100" id="post">${title}</div>
+                            <div class="card-body text-success">
+                                <h5 class="card-title" id="${id}-name">${username}</h5>
+                                <p class="card-text" id="${id}-contents">${contents}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
+                        </div>`;
+        $('#cards_box').append(tempHtml);
+    }
+
+    function home() {
+        window.location.href = "/"
+    }
+</script>
+<body>
+
+<div class="wrapper">
+    <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
+        <div class="card-header bg-transparent border-success main-title"><h4>스프링 자유게시판</h4></div>
+    </div>
+    <div class="max-width-100" id="cards_box"></div>
+    <img src="image/home-button.svg" class="home-button" onclick="home()" alt="Home">
+</div>
+</body>
+</html>
