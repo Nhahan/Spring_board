@@ -1,8 +1,8 @@
 package com.sparta.spring_week1_homework.service;
 
 import com.sparta.spring_week1_homework.domain.Text;
-import com.sparta.spring_week1_homework.domain.TextRepository;
-import com.sparta.spring_week1_homework.domain.TextRequestDto;
+import com.sparta.spring_week1_homework.repository.TextRepository;
+import com.sparta.spring_week1_homework.dto.TextRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

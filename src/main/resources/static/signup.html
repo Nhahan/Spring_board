@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--    https://getbootstrap.com/docs/4.0/components/alerts/-->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <title>회원가입 하기</title>
+    <style>
+        .wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .save-button {
+            width: 50%;
+            margin: 0 0 5px 0;
+        }
+
+        .input-box {
+            padding: 5px;
+        }
+
+        .form-class {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
+        <div class="card-header bg-transparent border-success main-title"><h4>회원가입 페이지</h4></div>
+    </div>
+    <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
+
+        <form class="form-class" action="/user/signup" method="post">
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><b>&nbspID&nbsp</b></span>
+                </div>
+                <input type="text" name="username" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                       id="id-register">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><b>PW</b></span>
+                </div>
+                <input type="password" name="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                       id="pw-register">
+            </div>
+            <button class="btn btn-success save-button" id="login-id-submit">확인</button>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>

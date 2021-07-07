@@ -1,4 +1,4 @@
-package com.sparta.spring_week1_homework.domain;
+package com.sparta.spring_week1_homework.dto;
 
 import lombok.Getter;
 

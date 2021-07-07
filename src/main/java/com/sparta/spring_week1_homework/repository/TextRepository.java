@@ -1,5 +1,6 @@
-package com.sparta.spring_week1_homework.domain;
+package com.sparta.spring_week1_homework.repository;
 
+import com.sparta.spring_week1_homework.domain.Text;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
