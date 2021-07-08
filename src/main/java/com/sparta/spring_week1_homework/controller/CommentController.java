@@ -4,6 +4,7 @@ import com.sparta.spring_week1_homework.domain.Comment;
 import com.sparta.spring_week1_homework.dto.CommentRequestDto;
 import com.sparta.spring_week1_homework.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,13 @@ public class CommentController {
     @GetMapping("/api/comments") // 댓글 조회
     public List<Comment> readComment() {
         return commentRepository.findAllByOrderByModifiedAtDesc();
+    }
+
+    @GetMapping("/api/counter/{Id}") // 댓글 갯수 조회
+    public int readCommentCounter(@PathVariable Long Id, Model model) {
+        List<Comment> list = commentRepository.findAllByTextId(Id);
+        model.addAttribute("counter", list.size());
+        return list.size();
     }
 
     @PostMapping("/api/comments") // 댓글 생성

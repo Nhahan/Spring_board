@@ -27,6 +27,7 @@
 </head>
 <script type="text/javascript" th:inline="javascript">
     $(document).ready(function () {
+        sessionChecker();
         $.ajax({
             type: 'GET',
             url: '/api/texts/all/' + [[${session.username}]],
@@ -39,9 +40,8 @@
                         let username = response[r]["username"];
                         let contents = response[r]["contents"];
                         let title = response[r]["title"];
-                        let modifiedAt = response[r]["modifiedAt"];
-                        let time = modifiedAt.split('T');
-                        let final_text = time[0] + " / " + time[1].split('.')[0]; // final_date
+                        let modifiedAt = response[r]["modifiedAt"].split('T');
+                        let final_text = modifiedAt[0] + " / " + modifiedAt[1].split('.')[0]; // final_date
                         addHTML(id, username, title, contents, final_text);
                     }
                 }
@@ -70,6 +70,13 @@
                             </div>
                         </div>`;
         $('#cards_box').append(tempHtml);
+    }
+
+    function sessionChecker() {
+        if (typeof([[${session.username}]]) == "undefined" || [[${session.username}]] == null) {
+            alert("세션이 만료되었습니다")
+            location.href = "/user/logout"
+        }
     }
 
     function home() {

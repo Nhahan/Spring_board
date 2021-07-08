@@ -26,7 +26,7 @@
             if ([[${session.username}]] === "null" || [[${session.username}]] === null) {
             } else {
                 location.href = "/"
-                alert("이미 로그인이 되어있습니다.")
+                alert("이미 로그인 되어있습니다.")
             }
         })
     </script>
@@ -44,7 +44,7 @@
                     <span class="input-group-text"><b>&nbspID&nbsp</b></span>
                 </div>
                 <input type="text" name="username" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                       id="id-register">
+                       placeholder="(ID를 입력해주세요)" id="id-register">
                 <div class="center-alignment">
                     <span class="valid_font" th:text="${valid_username}"></span>
                 </div>
@@ -54,14 +54,14 @@
                     <span class="input-group-text"><b>PW</b></span>
                 </div>
                 <input type="password" name="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                       id="pw-register">
+                       placeholder="(PW를 입력해주세요)" id="pw-register">
             </div>
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><b>PW</b></span>
                 </div>
                 <input type="password" name="passwordChecker" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                       id="pw-register-check">
+                       placeholder="(PW를 확인해주세요)" id="pw-register-check">
                 <dniv class = "center-alignment">
                     <span class="valid_font" th:text="${valid_password}"></span>
                 </dniv>

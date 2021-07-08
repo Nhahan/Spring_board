@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/user/signup").permitAll()
                 .antMatchers("/user/gindex").permitAll()
                 .antMatchers("/user/kakao/callback").permitAll()
+                .antMatchers("/api/comments").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 // 게스트에게 보여주기
                 .antMatchers("/api/texts").permitAll()

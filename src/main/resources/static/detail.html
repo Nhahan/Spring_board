@@ -22,6 +22,7 @@
 </head>
 <script type="text/javascript" th:inline="javascript">
     $(document).ready(function () {
+        sessionChecker();
         $.ajax({
             type: 'GET',
             url: '/api/texts/' + localStorage.getItem("id"),
@@ -51,7 +52,7 @@
         $('#cards_box').append(tempHtml);
         $.ajax({
             type: 'GET',
-            url: '/api/comments/',
+            url: '/api/comments',
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
                     console.log(response);
@@ -96,6 +97,7 @@
     }
 
     function writeComment() {
+        sessionChecker();
         let username = [[${session.username}]]; // 타임리프
         let contents = $('textarea#content-input').val();
         if (isValidContents(contents) == false) {
@@ -150,7 +152,6 @@
         return true;
     }
 
-
     function openComment() {
         const commentWrapper = document.querySelector(".comment-wrapper");
         if (commentWrapper.style.display == "flex") {
@@ -159,6 +160,13 @@
         } else {
             console.log(commentWrapper.style.display)
             commentWrapper.style.display = "flex";
+        }
+    }
+
+    function sessionChecker() {
+        if (typeof([[${session.username}]]) == "undefined" || [[${session.username}]] == null) {
+            alert("세션이 만료되었습니다")
+            location.href = "/user/logout"
         }
     }
 

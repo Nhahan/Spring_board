@@ -22,47 +22,55 @@
 </head>
 <script th:inline="javascript">
     $(document).ready(function () {
+        sessionChecker();
         $('#cards_box').empty();
         $.ajax({
             type: 'GET',
-            url: '/api/texts',
+            url: '/api/textsId',
             success: function (response) {
                 for (let i = 0; i < response.length; i++) {
                     let text = response[i];
                     let time = text.modifiedAt.split('T');
                     let final_text = time[0] + " / " + time[1].split('.')[0];
-                    addHTML(text.id, text.username, text.title, text.contents, final_text);
+                    addHTML(text.id, text.username, text.title, final_text);
                 }
             }
+            // addHTML(text.id, text.username, text.title, final_text);
         })
     })
 
     // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
-    function addHTML(id, username, title, contents, modifiedAt) {
-        if (username === [[${session.username}]]) {
-            let tempHtml = `<div class="card border-success mb-3 relative">
+    function addHTML(id, username, title, modifiedAt) {
+        // $.ajax({
+        //     type: 'GET',
+        //     url: `/api/counter/${id}`,
+        //     success: function (response) {
+                if (username === [[${session.username}]]) {
+                    let tempHtml = `<div class="card border-success mb-3 relative">
                             <div class="card-header bg-transparent border-success relative max-width-100" id="${id}-post">${title}
                                 <img src="/image/delete-button.svg" id="${id}-delete" alt="Delete" class="delete-button" onclick="deleteOne('${id}')">
                             </div>
                             <div class="card-body text-success">
                                 <h5 class="card-title" id="${id}-name">${username}</h5>
                             </div>
-                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
                             <img src="/image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
+<!--                            <div class="card-footer bg-transparent border-success relative" id="${id}-date">${modifiedAt}</div>-->
+<!--                            <div class="comments-counter">댓글 <span class="counter">{$response}</span>개</div>-->
                         </div>`;
-            $('#cards_box').append(tempHtml);
-        } else {
-            let tempHtml = `<div class="card border-success mb-3 relative">
+                    $('#cards_box').append(tempHtml);
+                } else {
+                    let tempHtml = `<div class="card border-success mb-3 relative">
                             <div class="card-header bg-transparent border-success relative max-width-100" id="${id}-post">${title}
                             </div>
                             <div class="card-body text-success">
                                 <h5 class="card-title" id="${id}-name">${username}</h5>
                             </div>
-                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
                             <img src="/image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
+<!--                            <div class="card-footer bg-transparent border-success relative" id="${id}-date">${modifiedAt}</div>-->
+<!--                            <div class="comments-counter">댓글 <span class="counter">{$response}</span>개</div>-->
                         </div>`;
-            $('#cards_box').append(tempHtml);
-        }
+                    $('#cards_box').append(tempHtml);
+                }
     }
 
     function isValidTitle(titleInput) {
@@ -81,26 +89,6 @@
         if (titleInput.includes(">")) {
             alert('부적절한 제목입니다');
             return false;
-        }
-        return true;
-    }
-
-    function isValidName(nameInput) {
-        if (nameInput == '') {
-            alert('별명을 입력해주세요');
-            return false;
-        }
-        if (nameInput.trim().length > 12) {
-            alert('별명을 공백 포함 12자 이하로 입력해주세요');
-            return false;
-            if (nameInput.includes("<")) {
-                alert('부적절한 별명입니다');
-                return false;
-            }
-            if (nameInput.includes(">")) {
-                alert('부적절한 별명입니다');
-                return false;
-            }
         }
         return true;
     }
@@ -126,13 +114,12 @@
     }
 
     function writePost() {
+        sessionChecker();
         let title = $('#title-input').val();
         if (isValidTitle(title) == false) {
             return
         }
-
-        let username = [[${session.username}]]; // 타임리프
-
+        let username = [[${session.username}]];
         let contents = $('textarea#content-input').val();
         if (isValidContents(contents) == false) {
             return
@@ -149,7 +136,7 @@
             url: "/api/texts",
             contentType: "application/json", // JSON 형식으로 전달함을 알리기
             data: JSON.stringify(data),
-            success: function (response) {
+            success: function () {
                 location.reload();
             }
         });
@@ -164,6 +151,13 @@
                     location.reload();
                 }
             })
+        }
+    }
+
+    function sessionChecker() {
+        if (typeof ([[${session.username}]]) == "undefined" || [[${session.username}]] == null) {
+            alert("세션이 만료되었습니다")
+            location.href = "/user/logout"
         }
     }
 

@@ -27,6 +27,11 @@ public class TextController {
         return textRepository.findAllByOrderByModifiedAtDesc();
     }
 
+    @GetMapping("/api/textsId") // 게시글 조회
+    public List<Text> readTextId() {
+        return textRepository.findAllByOrderByIdDesc();
+    }
+
     @GetMapping("/api/texts/{id}") //
     public List<Text> readTextById(@PathVariable Long id) {
         return textRepository.findAllById(id);
