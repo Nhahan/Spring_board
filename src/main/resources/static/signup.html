@@ -45,7 +45,29 @@
             flex-direction: column;
             align-items: center;
         }
+
+        .center-alignment {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .valid_font {
+            font-size: 12px;
+            color: red;
+        }
     </style>
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function () {
+            console.log([[${session.username}]])
+            if ([[${session.username}]] === "null" || [[${session.username}]] === null) {
+            } else {
+                location.href = "/"
+                alert("이미 로그인이 되어있습니다.")
+            }
+        })
+    </script>
 </head>
 <body>
 <div class="wrapper">
@@ -61,6 +83,9 @@
                 </div>
                 <input type="text" name="username" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
                        id="id-register">
+                <div class="center-alignment">
+                    <span class="valid_font" th:text="${valid_username}"></span>
+                </div>
             </div>
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
@@ -68,6 +93,19 @@
                 </div>
                 <input type="password" name="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
                        id="pw-register">
+            </div>
+            <div class="input-group input-group-sm mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"><b>PW</b></span>
+                </div>
+                <input type="password" name="passwordChecker" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                       id="pw-register-check">
+                <dniv class = "center-alignment">
+                    <span class="valid_font" th:text="${valid_password}"></span>
+                </dniv>
+            </div>
+            <div class = center-alignment>
+                <span class="valid_font" th:text="${error}"></span>
             </div>
             <button class="btn btn-success save-button" id="login-id-submit">확인</button>
         </form>

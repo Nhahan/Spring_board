@@ -27,9 +27,14 @@ public class TextController {
         return textRepository.findAllByOrderByModifiedAtDesc();
     }
 
-    @GetMapping("/api/texts/{id}")
+    @GetMapping("/api/texts/{id}") //
     public List<Text> saveText(@PathVariable Long id) {
         return textRepository.findAllById(id);
+    }
+
+    @GetMapping("/api/texts/all/{username}") //
+    public List<Text> readTextByUsername(@PathVariable String username) {
+        return textRepository.findAllByUsername(username);
     }
 
     @PutMapping("/api/texts/{id}")

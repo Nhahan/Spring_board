@@ -22,19 +22,23 @@
 </head>
 <script th:inline="javascript">
     $(document).ready(function () {
-        $('#cards_box').empty();
-        $.ajax({
-            type: 'GET',
-            url: '/api/texts',
-            success: function (response) {
-                for (let i = 0; i < response.length; i++) {
-                    let text = response[i];
-                    let time = text.modifiedAt.split('T');
-                    let final_text = time[0] + " / " + time[1].split('.')[0];
-                    addHTML(text.id, text.username, text.title, text.contents, final_text);
+        console.log([[${session.username}]])
+        if ([[${session.username}]] === "null" || [[${session.username}]] === null) {
+            $.ajax({
+                type: 'GET',
+                url: '/api/texts',
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        let text = response[i];
+                        let time = text.modifiedAt.split('T');
+                        let final_text = time[0] + " / " + time[1].split('.')[0];
+                        addHTML(text.id, text.username, text.title, text.contents, final_text);
+                    }
                 }
-            }
-        })
+            })
+        } else {
+            location.href = "/"
+        }
     })
 
     // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
@@ -169,35 +173,10 @@
 </script>
 <body>
 <div class="wrapper">
-    <a href="/user/logout"><img src="image/logout.svg" class="logout-button" alt="Logout"></a>
     <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
         <div class="card-header bg-transparent border-success main-title"><h4>스프링 자유게시판</h4></div>
-        <div class="center-alignment"><span th:text="${session.username}"></span></div>
+        <div class="center-alignment">Guests</div>
     </div>
-
-    <div class="center-alignment center-alignment-mb">
-        <button type="button" class="btn btn-success" onclick="location.href='/user/indexMyTexts'">
-            내 글 보기
-        </button>
-    </div>
-
-    <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
-        <form class="form-class">
-            <div class="input-group input-group-sm mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">제목</span>
-                </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                       id="title-input">
-            </div>
-            <div class="input-group input-group-sm mb-3 textarea-height">
-                <textarea class="form-control save-z-index" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                          placeholder="(내용을 입력하세요)" id="content-input"></textarea>
-            </div>
-            <button type="button" class="btn btn-success save-button" onclick="writePost()">저장</button>
-        </form>
-    </div>
-
     <div class="max-width-100" id="cards_box">
     </div>
 

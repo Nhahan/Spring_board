@@ -89,3 +89,30 @@
     right: 5.9%;
     bottom: 5.9%;
 }
+
+.logout-button {
+    width: 35px;
+    height: 35px;
+    position: fixed;
+    right: 6%;
+    top: 6%;
+    text-align: center;
+}
+
+.logout-button:hover {
+    width: 36px;
+    height: 36px;
+    right: 5.9%;
+    top: 5.9%;
+}
+
+.center-alignment {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.center-alignment-mb {
+    margin-bottom: 15px;
+}

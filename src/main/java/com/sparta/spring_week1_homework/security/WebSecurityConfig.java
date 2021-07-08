@@ -16,7 +16,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder encodePassword() {
         return new BCryptPasswordEncoder();
-    }
+    } // 패스워드 암호화
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,10 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/user/login") // 로그인 위치
                 .loginProcessingUrl("/user/login") // 로그인 실패 위치
                 .defaultSuccessUrl("/")
+                .failureUrl("/user/login/error")
                 .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/user/logout")
+                .logoutUrl("/user/logout") // 시큐리티가 로그아웃 자동으로 진행해줌!
                 .permitAll()
                 .and()
                 .exceptionHandling()
@@ -47,9 +48,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/user/forbidden");
     }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 }

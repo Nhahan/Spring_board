@@ -23,12 +23,6 @@ public class Text extends Timestamped { // 생성,수정 시간을 자동으로 
     @Column(nullable = false)
     private String contents;
 
-    public Text(String username, String title, String contents) {
-        this.username = username;
-        this.title = title;
-        this.contents = contents;
-    }
-
     public Text(TextRequestDto requestDto) {
         this.username = requestDto.getUsername();
         this.title = requestDto.getTitle();

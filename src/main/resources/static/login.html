@@ -44,7 +44,37 @@
             flex-direction: column;
             align-items: center;
         }
+
+        .center-alignment {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .alert-danger {
+            font-size: 14px;
+        }
     </style>
+    <script type="text/javascript" th:inline="javascript">
+        $(document).ready(function () {
+            console.log([[${session.username}]])
+            if ([[${session.username}]] === "null" || [[${session.username}]] === null) {
+            } else {
+                location.href = "/"
+                alert("이미 로그인이 되어있습니다.")
+            }
+        })
+
+        function kakaoLogin() {
+            try {
+                location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'
+            } catch (err) {
+                console.log(err)
+                location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://nahan.shop/user/kakao/callback&response_type=code'
+            }
+        }
+    </script>
 </head>
 <body>
 <div class="wrapper">
@@ -52,26 +82,41 @@
         <div class="card-header bg-transparent border-success main-title"><h4>로그인 페이지</h4></div>
     </div>
     <!--    https://getbootstrap.com/docs/4.0/components/alerts/-->
+
+
     <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
+
+        <div class="center-alignment">
+            <button type="button" class="btn btn-warning save-button" onclick="kakaoLogin()">카카오톡</button>
+        </div>
+
         <form class="form-class" action="/user/login" method="post">
-            <button type="button" class="btn btn-success save-button" onclick="kakaoLogin()">카카오톡</button>
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><b>&nbspID&nbsp</b></span>
                 </div>
-                <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                <input type="text" name="username" class="form-control" aria-label="Small"
+                       aria-describedby="inputGroup-sizing-sm"
                        id="title-input">
             </div>
             <div class="input-group input-group-sm mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><b>PW</b></span>
                 </div>
-                <input type="password" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                <input type="password" name="password" class="form-control" aria-label="Small"
+                       aria-describedby="inputGroup-sizing-sm"
                        id="name-input">
             </div>
-            <button class="btn btn-success save-button" onclick="location.href='/user/index'">로그인</button>
-            <button class="btn btn-success save-button" onclick="location.href='/user/signup'">회원가입</button>
+            <div class="alert alert-danger" role="alert" th:if="${loginError}">로그인에 실패하였습니다.</div>
+            <button class="btn btn-success save-button">로그인</button>
         </form>
+
+        <div class="center-alignment">
+            <button class="btn btn-success save-button" onclick="location.href='/user/signup'">
+                회원가입
+            </button>
+        </div>
+
     </div>
 </div>
 </body>
