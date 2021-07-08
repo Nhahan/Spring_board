@@ -31,10 +31,10 @@ public class KakaoOAuth2 {
         params.add("grant_type", "authorization_code");
         params.add("client_id", "ac1c99e9b98333045f9ed536825ceeef");
         try {
-            params.add("redirect_uri", "http://localhost:8080/user/kakao/callback");
+            params.add("redirect_uri", "http://nahan.shop/user/kakao/callback");
         } catch (Exception e) {
             e.printStackTrace();
-            params.add("redirect_uri", "http://nahan.shop/user/kakao/callback");
+            params.add("redirect_uri", "http://localhost:8080/user/kakao/callback");
         }
         params.add("code", authorizedCode);
 

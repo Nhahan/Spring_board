@@ -29,23 +29,23 @@
             }
         })
 
-        // function kakaoLogin() { // 서버용
-        //     try {
-        //         location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://nahan.shop/user/kakao/callback&response_type=code'
-        //     } catch (err) {
-        //         console.log(err)
-        //         location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'
-        //     }
-        // }
-
-        function kakaoLogin() { //로컬용
+        function kakaoLogin() { // 서버용
             try {
-                location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'
+                location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://nahan.shop/user/kakao/callback&response_type=code'
             } catch (err) {
                 console.log(err)
-                location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://nahan.shop/user/kakao/callback&response_type=code'
+                location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'
             }
         }
+
+        // function kakaoLogin() { //로컬용
+        //     try {
+        //         location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'
+        //     } catch (err) {
+        //         console.log(err)
+        //         location.href = 'https://kauth.kakao.com/oauth/authorize?client_id=ac1c99e9b98333045f9ed536825ceeef&redirect_uri=http://nahan.shop/user/kakao/callback&response_type=code'
+        //     }
+        // }
     </script>
 </head>
 <body>
