@@ -61,14 +61,14 @@ public class UserController {
                 model.addAttribute(key, validatorResult.get(key));
             }
 
-            return "/signup";
+            return "signup";
         }
         String error = userService.registerUser(requestDto);
         if (error == "") {
             return "redirect:/";
         } else {
             model.addAttribute("error", error);
-            return "/signup";
+            return "signup";
         }
     }
 }
