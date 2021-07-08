@@ -28,7 +28,7 @@ public class TextController {
     }
 
     @GetMapping("/api/texts/{id}") //
-    public List<Text> saveText(@PathVariable Long id) {
+    public List<Text> readTextById(@PathVariable Long id) {
         return textRepository.findAllById(id);
     }
 

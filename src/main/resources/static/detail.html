@@ -17,7 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title>스프링 게시판</title>
 </head>
 <script type="text/javascript" th:inline="javascript">
@@ -43,26 +43,155 @@
                                 <h5 class="card-title" id="${id}-name">${username}</h5>
                                 <p class="card-text" id="${id}-contents">${contents}</p>
                             </div>
-                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
+                            <div class="card-footer bg-transparent border-success relative" id="${id}-date">
+                                ${modifiedAt}
+                                <img src="/image/comments.svg" id="${id}-comments" alt="Comments" class="comments-button" onclick="openComment()">
+                            </div>
                         </div>`;
         $('#cards_box').append(tempHtml);
+        $.ajax({
+            type: 'GET',
+            url: '/api/comments/',
+            success: function (response) {
+                for (let i = 0; i < response.length; i++) {
+                    console.log(response);
+                    if (response[i]["textId"] == localStorage.getItem("id")) {
+                        let commentId = response[i]["id"]
+                        let commentUsername = response[i]["username"];
+                        let commentContents = response[i]["contents"];
+                        let commentTime = response[i]["modifiedAt"].split('T');
+                        let commentFinalTime = commentTime[0] + " / " + commentTime[1].split('.')[0];
+                        addComment(commentId, commentUsername, commentContents, commentFinalTime);
+                    }
+                }
+            }
+        })
+    }
+
+    function addComment(id, username, contents, modifiedAt) {
+        if (username === [[${session.username}]]) { // 댓글 쓴 사람과 접속 한 사람이 같다면
+            let commentHtml = `<div class="card border-success mb-3 relative">
+                            <div class="card-header bg-transparent border-success relative max-width-100" id="post">${username}
+                            <img src="/image/delete-button.svg" id="${id}-delete" alt="Delete" class="delete-button" onclick="deleteComment('${id}')"></div>
+                            <div class="card-body text-success">
+                                <p class="card-text" id="${id}-contents">${contents}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-success relative" id="${id}-date">
+                                ${modifiedAt}
+                            </div>
+                           </div>`;
+            $('#comments_box').append(commentHtml);
+        } else { // 댓글 쓴 사람과 접속 한 사람이 다르다면
+            let commentHtml = `<div class="card border-success mb-3 relative">
+                            <div class="card-header bg-transparent border-success relative max-width-100" id="post">${username}</div>
+                            <div class="card-body text-success">
+                                <p class="card-text" id="${id}-contents">${contents}</p>
+                            </div>
+                            <div class="card-footer bg-transparent border-success relative" id="${id}-date">
+                                ${modifiedAt}
+                            </div>
+                           </div>`;
+            $('#comments_box').append(commentHtml);
+        }
+    }
+
+    function writeComment() {
+        let username = [[${session.username}]]; // 타임리프
+        let contents = $('textarea#content-input').val();
+        if (isValidContents(contents) == false) {
+            return
+        }
+        if (contents == "") {
+            contents = "내용 없음"
+        }
+        let data = {'textId': localStorage.getItem("id"), 'username': username, 'contents': contents};
+        $.ajax({
+            type: "POST",
+            url: "/api/comments",
+            contentType: "application/json", // JSON 형식으로 전달함을 알리기
+            data: JSON.stringify(data),
+            success: function () {
+                location.reload();
+                openComment();
+            }
+        });
+    }
+
+    function deleteComment(id) {
+        if (confirm("정말 삭제하시겠습니까?") === true) {    //확인
+            $.ajax({
+                type: "DELETE",
+                url: `/api/comments/${id}`,
+                success: function () {
+                    location.reload();
+                    openComment();
+                }
+            })
+        }
+    }
+
+    function isValidContents(contentsInput) {
+        if (contentsInput == '') {
+            alert('내용을 입력해주세요');
+            return false;
+        }
+        if (contentsInput.trim().length > 30) {
+            alert('내용을 공백 포함 30자 이하로 입력해주세요');
+            return false;
+        }
+        if (contentsInput.includes("<")) {
+            alert('부적절한 내용입니다');
+            return false;
+        }
+        if (contentsInput.includes(">")) {
+            alert('부적절한 내용입니다');
+            return false;
+        }
+        return true;
+    }
+
+
+    function openComment() {
+        const commentWrapper = document.querySelector(".comment-wrapper");
+        if (commentWrapper.style.display == "flex") {
+            console.log(commentWrapper.style.display)
+            commentWrapper.style.display = "none";
+        } else {
+            console.log(commentWrapper.style.display)
+            commentWrapper.style.display = "flex";
+        }
     }
 
     function home() {
-        window.location.href = "/"
+        location.href = "/";
     }
 </script>
 <body>
 
 
 <div class="wrapper">
-    <a href="/user/logout"><img src="image/logout.svg" class="logout-button" alt="Logout"></a>
+    <a href="/user/logout"><img src="/image/logout.svg" class="logout-button" alt="Logout"></a>
     <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
         <div class="card-header bg-transparent border-success main-title"><h4>스프링 자유게시판</h4></div>
         <div class="center-alignment"><span th:text="${session.username}"></span></div>
     </div>
     <div class="max-width-100" id="cards_box"></div>
-    <img src="image/home-button.svg" class="home-button" onclick="home()" alt="Home">
+    <div class=" comment-wrapper">
+
+        <div class="card border-success mb-3 input-box">
+            <form class="form-class">
+                <div class="input-group input-group-sm mb-3 textarea-height">
+                <textarea class="form-control save-z-index" aria-label="Small" aria-describedby="inputGroup-sizing-sm"
+                          placeholder="(댓글을 입력하세요)" id="content-input"></textarea>
+                </div>
+                <button type="button" class="btn btn-success" onclick="writeComment()">저장</button>
+            </form>
+            <div class="card-footer bg-transparent border-success relative" id="comments_box">
+            </div>
+        </div>
+
+    </div>
+    <img src="/image/home-button.svg" class="home-button" onclick="home()" alt="Home">
 </div>
 </body>
 </html>

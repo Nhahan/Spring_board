@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <!--    https://getbootstrap.com/docs/4.0/components/alerts/-->
+    <!-- https://getbootstrap.com/docs/4.0/components/alerts/-->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -17,45 +17,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title>스프링 로그인</title>
-    <style>
-        .wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .save-button {
-            width: 50%;
-            margin: 0 0 5px 0;
-        }
-
-        .input-box {
-            padding: 5px;
-        }
-
-        .form-class {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .center-alignment {
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .alert-danger {
-            font-size: 14px;
-        }
-    </style>
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function () {
             console.log([[${session.username}]])
@@ -117,6 +80,12 @@
             </button>
         </div>
 
+    </div>
+    <div class="wrapper">
+        <div class="center-alignment">
+            <button type="button" class="btn btn-secondary" onclick="location.href='/user/gindex'">Guest 입장
+            </button>
+        </div>
     </div>
 </div>
 </body>

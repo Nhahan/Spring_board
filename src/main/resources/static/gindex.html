@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <!--    https://getbootstrap.com/docs/4.0/components/alerts/-->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -19,46 +19,41 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title>스프링 게시판</title>
-    <style>
-        .add-none {
-            text-align: center;
-        }
-    </style>
 </head>
-<script type="text/javascript" th:inline="javascript">
+<script th:inline="javascript">
     $(document).ready(function () {
-        $.ajax({
-            type: 'GET',
-            url: '/api/texts/all/' + [[${session.username}]],
-            success: function (response) {
-                if (response.length === 0) {
-                    addNone();
-                } else {
-                    for (let r = 0; r < response.length; r++) {
-                        let id = response[r]["id"];
-                        let username = response[r]["username"];
-                        let contents = response[r]["contents"];
-                        let title = response[r]["title"];
-                        let modifiedAt = response[r]["modifiedAt"];
-                        let time = modifiedAt.split('T');
-                        let final_text = time[0] + " / " + time[1].split('.')[0]; // final_date
-                        addHTML(id, username, title, contents, final_text);
+        if ([[${session.username}]] === "null" || [[${session.username}]] === null) {
+            $('#cards_box').empty();
+            $.ajax({
+                type: 'GET',
+                url: '/api/texts',
+                success: function (response) {
+                    if (response.length === 1) {
+                        addNone();
+                    } else {
+                        console.log(response)
+                        for (let i = 0; i < response.length; i++) {
+                            let text = response[i];
+                            let time = text.modifiedAt.split('T');
+                            let final_text = time[0] + " / " + time[1].split('.')[0];
+                            addHTML(text.id, text.username, text.title, text.contents, final_text);
+                        }
                     }
                 }
-            }
-        })
+            })
+        } else {
+            location.href = "/"
+        }
     })
 
     function addHTML(id, username, title, contents, modifiedAt) {
         let tempHtml = `<div class="card border-success mb-3 relative">
                             <div class="card-header bg-transparent border-success relative max-width-100" id="${id}-post">${title}
-                                <img src="/image/delete-button.svg" id="${id}-delete" alt="Delete" class="delete-button" onclick="deleteOne('${id}')">
                             </div>
                             <div class="card-body text-success">
                                 <h5 class="card-title" id="${id}-name">${username}</h5>
-                                <p class="card-text" id="${id}-contents">${contents}</p>
                             </div>
-                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
+                            <img src="/image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
                         </div>`;
         $('#cards_box').append(tempHtml);
     }
@@ -66,38 +61,25 @@
     function addNone() {
         let tempHtml = `<div class="card border-success mb-3 relative">
                             <div class="card-body text-success">
-                                <p class="card-text add-none"><b>작성하신 글이 없습니다.</b></p>
+                                <p class="card-text add-none"><b>작성된 글이 없습니다.</b></p>
                             </div>
                         </div>`;
         $('#cards_box').append(tempHtml);
     }
-
-    function home() {
-        window.location.href = "/"
-    }
-
-    function deleteOne(id) {
-        if (confirm("정말 삭제하시겠습니까?") === true) {    //확인
-            $.ajax({
-                type: "DELETE",
-                url: `/api/texts/${id}`,
-                success: function () {
-                    window.location.reload();
-                }
-            })
-        }
-    }
 </script>
 <body>
-
 <div class="wrapper">
-    <a href="/user/logout"><img src="/image/logout.svg" class="logout-button" alt="Logout"></a>
     <div class="card border-success mb-3 input-box" style="max-width: 18rem;">
         <div class="card-header bg-transparent border-success main-title"><h4>스프링 자유게시판</h4></div>
-        <div class="center-alignment"><span th:text="${session.username}"></span></div>
+        <div class="center-alignment">Guest</div>
     </div>
-    <div class="max-width-100" id="cards_box"></div>
-    <img src="/image/home-button.svg" class="home-button" onclick="home()" alt="Home">
+        <div class="center-alignment center-alignment-mb">
+            <button class="btn btn-success" onclick="location.href='/user/login'">
+                로그인하기
+            </button>
+        </div>
+    <div class="max-width-100" id="cards_box">
+    </div>
 </div>
 </body>
 </html>

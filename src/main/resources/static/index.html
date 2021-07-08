@@ -17,7 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
     <title>스프링 게시판</title>
 </head>
 <script th:inline="javascript">
@@ -39,17 +39,30 @@
 
     // 메모 하나를 HTML로 만들어서 body 태그 내 원하는 곳에 붙입니다.
     function addHTML(id, username, title, contents, modifiedAt) {
-        let tempHtml = `<div class="card border-success mb-3 relative">
+        if (username === [[${session.username}]]) {
+            let tempHtml = `<div class="card border-success mb-3 relative">
                             <div class="card-header bg-transparent border-success relative max-width-100" id="${id}-post">${title}
-                                <img src="image/free-icon-delete-button-70287.svg" id="${id}-delete" alt="Delete" class="delete-button" onclick="deleteOne('${id}')">
+                                <img src="/image/delete-button.svg" id="${id}-delete" alt="Delete" class="delete-button" onclick="deleteOne('${id}')">
                             </div>
                             <div class="card-body text-success">
                                 <h5 class="card-title" id="${id}-name">${username}</h5>
                             </div>
                             <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
-                            <img src="image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
+                            <img src="/image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
                         </div>`;
-        $('#cards_box').append(tempHtml);
+            $('#cards_box').append(tempHtml);
+        } else {
+            let tempHtml = `<div class="card border-success mb-3 relative">
+                            <div class="card-header bg-transparent border-success relative max-width-100" id="${id}-post">${title}
+                            </div>
+                            <div class="card-body text-success">
+                                <h5 class="card-title" id="${id}-name">${username}</h5>
+                            </div>
+                            <div class="card-footer bg-transparent border-success" id="${id}-date">${modifiedAt}</div>
+                            <img src="/image/plus.svg" id="${id}-plus" class="plus-button" onclick="detail('${id}')" alt="Plus">
+                        </div>`;
+            $('#cards_box').append(tempHtml);
+        }
     }
 
     function isValidTitle(titleInput) {
@@ -97,8 +110,8 @@
             alert('내용을 입력해주세요');
             return false;
         }
-        if (contentsInput.trim().length > 140) {
-            alert('내용을 공백 포함 140자 이하로 입력해주세요');
+        if (contentsInput.trim().length > 120) {
+            alert('내용을 공백 포함 120자 이하로 입력해주세요');
             return false;
         }
         if (contentsInput.includes("<")) {
@@ -127,9 +140,6 @@
         if (title == "") {
             title = "제목 없음"
         }
-        if (username == "") {
-            username = "익명"
-        }
         if (contents == "") {
             contents = "내용 없음"
         }
@@ -140,18 +150,18 @@
             contentType: "application/json", // JSON 형식으로 전달함을 알리기
             data: JSON.stringify(data),
             success: function (response) {
-                window.location.reload();
+                location.reload();
             }
         });
     }
 
     function deleteOne(id) {
-        if (confirm("정말 삭제하시겠습니까?") == true) {    //확인
+        if (confirm("정말 삭제하시겠습니까?") === true) {    //확인
             $.ajax({
                 type: "DELETE",
                 url: `/api/texts/${id}`,
                 success: function () {
-                    window.location.reload();
+                    location.reload();
                 }
             })
         }
@@ -159,11 +169,11 @@
 
     function detail(id) {
         localStorage.setItem("id", `${id}`)
-        window.location.href = "detail.html"
+        location.href = "/user/detail"
     }
 
     function home() {
-        window.location.href = "/"
+        location.href = "/"
     }
 
 </script>

@@ -50,7 +50,7 @@ public class UserService {
         String errorMessage = "";
         // 회원 ID 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
-        if (username.equals("null")) {
+        if (username.equals("null") || username.equals("admin")) {
             errorMessage = "부적절한 ID입니다.";
             return errorMessage;
         }
